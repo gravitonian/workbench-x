@@ -1,0 +1,7 @@
+{
+  "ecmHost": "http://{hostname}:{port}/ecm",
+  "bpmHost": "http://{hostname}:{port}/bpm",
+  "application": {
+    "name": "File Manager"
+  }
+}

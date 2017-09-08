@@ -9,7 +9,9 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-core/bundles/assets", "output": "./assets/" },
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-login/bundles/assets", "output": "./assets/" }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,9 +21,14 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/material-design-lite/dist/material.orange-blue.min.css",
+        "../node_modules/material-design-icons/iconfont/material-icons.css",
+        "../node_modules/ng2-alfresco-core/prebuilt-themes/adf-blue-orange.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/material-design-lite/material.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
