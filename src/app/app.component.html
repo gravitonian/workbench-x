@@ -1,13 +1,45 @@
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-</div>
-
-<adf-login
-  [providers]="'ALL'"
-  (onSuccess)="onLoginSuccess($event)"
-  (onError)="onLoginError($event)">
-</adf-login>
-
-<router-outlet></router-outlet>
+<md-sidenav-container>
+  <md-sidenav #mainSideNav mode="side" opened>
+    <md-toolbar>
+      <img src="../assets/alfresco-logo.png" style="height:80%">
+      <span fxFlex></span>
+      {{appName}}
+    </md-toolbar>
+    <md-nav-list>
+      <a *ngFor="let menuItem of mainMenuItems"
+         md-list-item
+         md-ripple
+         [style.position]="'relative'"
+         routerLinkActive="selected"
+         [routerLink]="[menuItem.path]">
+        <md-icon *ngIf="menuItem.icon">{{menuItem.icon}}</md-icon>
+        <span>{{menuItem.title}}</span>
+      </a>
+    </md-nav-list>
+  </md-sidenav>
+  <md-toolbar color="primary">
+    <button md-icon-button (click)="mainSideNav.toggle()">
+      <md-icon *ngIf="mainSideNav.opened">chevron_left</md-icon>
+      <md-icon *ngIf="!mainSideNav.opened">menu</md-icon>
+    </button>
+    {{(activeMenuItem$ | async)?.title}}
+    <span fxFlex></span>
+    <span class="done">
+      <button><md-icon>search</md-icon></button>
+    </span>
+    <button md-icon-button [mdMenuTriggerFor]="dropdownMenu">
+      <md-icon>more_vert</md-icon>
+    </button>
+  </md-toolbar>
+  <router-outlet></router-outlet>
+</md-sidenav-container>
+<md-menu #dropdownMenu x-position="before">
+  <a md-menu-item href="" routerLink="/logout">
+    <md-icon>exit_to_app</md-icon>
+    <span>Logout</span>
+  </a>
+  <a md-menu-item href="" routerLink="/about">
+    <md-icon>info_outline</md-icon>
+    <span>About</span>
+  </a>
+</md-menu>

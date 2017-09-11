@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { AppMenuService, MenuItem } from './app-menu/app-menu.service';
+
 
 @Component({
   selector: 'app-root',
@@ -6,14 +9,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Workbench-X';
+  appName = 'Workbench X';
+  mainMenuItems;
+  activeMenuItem$: Observable<MenuItem>;
 
-  onLoginSuccess($event) {
-    console.log('Successful login: ' + $event.value);
+  constructor(private menuService: AppMenuService) {
+    this.mainMenuItems = this.menuService.getMenuItems();
+    this.activeMenuItem$ = this.menuService.activeMenuItem$;
   }
-
-  onLoginError($event) {
-    console.log('Failed login: ' + $event.value);
-  }
-
 }
