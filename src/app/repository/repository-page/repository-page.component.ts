@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { NotificationService } from 'ng2-alfresco-core';
 import { DocumentListComponent } from 'ng2-alfresco-documentlist';
 import { MinimalNodeEntity } from 'alfresco-js-api';
 
@@ -13,7 +14,7 @@ export class RepositoryPageComponent implements OnInit {
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
 
-  constructor() {
+  constructor(private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -38,5 +39,18 @@ export class RepositoryPageComponent implements OnInit {
     } else {
       return [];
     }
+  }
+
+  onDeleteActionPermissionError(event: any) {
+    this.notificationService.openSnackMessage(
+      // Will display a message something like
+      // "You don't have the 'delete' permission to do a 'delete' operation on the content"
+      `You don't have the '${event.permission}' permission to do a '${event.action}' operation on the ${event.type}`,
+      4000);
+  }
+
+  onDeleteActionSuccess(node) {
+    // Will print something like "Successfully deleted a node: 4fdf9fe4-c5fe-4313-bb50-9edbada9216b"
+    console.log('Successfully deleted a node: ' + node);
   }
 }

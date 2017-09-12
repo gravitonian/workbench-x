@@ -26,7 +26,7 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { CoreModule } from 'ng2-alfresco-core';
+import { CoreModule, TRANSLATION_PROVIDER } from 'ng2-alfresco-core';
 
 @NgModule({
   imports: [
@@ -59,6 +59,16 @@ import { CoreModule } from 'ng2-alfresco-core';
     CoreModule
   ],
   declarations: [],
+  providers: [
+    {
+      provide: TRANSLATION_PROVIDER,
+      multi: true,
+      useValue: {
+        name: 'app',
+        source: 'assets'
+      }
+    }
+  ],
   exports: [
     MdAutocompleteModule,
     MdCoreModule,

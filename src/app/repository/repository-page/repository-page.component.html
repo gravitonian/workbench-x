@@ -15,6 +15,30 @@
     [currentFolderId]="'-root-'"
     [contextMenuActions]="true"
     [contentActions]="true">
+    <content-actions>
+      <!-- Folder actions -->
+      <content-action
+        icon="delete"
+        title="{{'DOCUMENT_LIST.ACTIONS.FOLDER.DELETE' | translate}}"
+        target="folder"
+        permission="delete"
+        [disableWithNoPermission]="true"
+        (permissionEvent)="onDeleteActionPermissionError($event)"
+        (success)="onDeleteActionSuccess($event)"
+        handler="delete">
+      </content-action>
+      <!-- File actions -->
+      <content-action
+        icon="delete"
+        title="{{'DOCUMENT_LIST.ACTIONS.DOCUMENT.DELETE' | translate}}"
+        target="document"
+        permission="delete"
+        [disableWithNoPermission]="true"
+        (permissionEvent)="onDeleteActionPermissionError($event)"
+        (success)="onDeleteActionSuccess($event)"
+        handler="delete">
+      </content-action>
+    </content-actions>
   </adf-document-list>
 
 </adf-upload-drag-area>
