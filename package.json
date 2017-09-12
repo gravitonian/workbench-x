@@ -31,7 +31,9 @@
     "material-design-lite": "1.2.1",
     "moment": "2.15.1",
     "ng2-alfresco-core": "1.8.0",
+    "ng2-alfresco-documentlist": "1.8.0",
     "ng2-alfresco-login": "1.8.0",
+    "ng2-alfresco-upload": "1.8.0",
     "rxjs": "5.1.0",
     "zone.js": "0.7.6"
   },

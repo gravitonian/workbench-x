@@ -11,7 +11,10 @@
         "assets",
         "favicon.ico",
         { "glob": "**/*", "input": "../node_modules/ng2-alfresco-core/bundles/assets", "output": "./assets/" },
-        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-login/bundles/assets", "output": "./assets/" }
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-login/bundles/assets", "output": "./assets/" },
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-datatable/bundles/assets", "output": "./assets/" },
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-documentlist/bundles/assets", "output": "./assets/" },
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-upload/bundles/assets", "output": "./assets/" }
       ],
       "index": "index.html",
       "main": "main.ts",

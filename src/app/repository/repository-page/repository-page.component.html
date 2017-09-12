@@ -1,0 +1,20 @@
+<adf-upload-drag-area
+  [parentId]="documentList.currentFolderId"
+  [adf-node-permission]="'create'"
+  [adf-nodes]="getNodesForPermissionCheck()"
+  (onSuccess)="onDragAndDropUploadSuccess($event)">
+
+  <adf-breadcrumb
+    [target]="documentList"
+    [folderNode]="documentList.folderNode">
+  </adf-breadcrumb>
+
+  <adf-document-list
+    #documentList
+    [navigationMode]="'click'"
+    [currentFolderId]="'-root-'"
+    [contextMenuActions]="true"
+    [contentActions]="true">
+  </adf-document-list>
+
+</adf-upload-drag-area>

@@ -79,7 +79,10 @@ import { CoreModule } from 'ng2-alfresco-core';
     MdSnackBarModule,
     MdToolbarModule,
     MdTabsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+
+    /* Alfresco ADF */
+    CoreModule
   ]
 })
 export class AppCommonModule { }

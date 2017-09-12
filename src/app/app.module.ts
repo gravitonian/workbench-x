@@ -8,6 +8,8 @@ import { AppMenuService } from './app-menu/app-menu.service';
 import { AppCommonModule } from './app-common/app-common.module';
 import { AppLoginRoutingModule } from './app-login/app-login-routing.module';
 import { AppLoginModule } from './app-login/app-login.module';
+import { RepositoryRoutingModule } from './repository/repository-routing.module';
+import { RepositoryModule } from './repository/repository.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { AppLoginModule } from './app-login/app-login.module';
     AppRoutingModule,
     AppCommonModule,
     AppLoginModule,
-    AppLoginRoutingModule
+    AppLoginRoutingModule,
+    RepositoryModule,
+    RepositoryRoutingModule
   ],
   providers: [AppMenuService],
   bootstrap: [AppComponent]
