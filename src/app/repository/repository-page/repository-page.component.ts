@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { NotificationService } from 'ng2-alfresco-core';
+import { NotificationService, AlfrescoContentService,
+  FolderCreatedEvent, CreateFolderDialogComponent } from 'ng2-alfresco-core';
 import { DocumentListComponent } from 'ng2-alfresco-documentlist';
 import { MinimalNodeEntity } from 'alfresco-js-api';
+import { MdDialog } from '@angular/material';
 
 @Component({
   selector: 'app-repository-page',
@@ -14,10 +16,13 @@ export class RepositoryPageComponent implements OnInit {
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService,
+              private contentService: AlfrescoContentService,
+              private dialog: MdDialog) {
   }
 
   ngOnInit() {
+    this.contentService.folderCreated.subscribe(value => this.onFolderCreated(value));
   }
 
   onDragAndDropUploadSuccess($event: Event) {
@@ -52,5 +57,23 @@ export class RepositoryPageComponent implements OnInit {
   onDeleteActionSuccess(node) {
     // Will print something like "Successfully deleted a node: 4fdf9fe4-c5fe-4313-bb50-9edbada9216b"
     console.log('Successfully deleted a node: ' + node);
+  }
+
+  onFolderCreated(event: FolderCreatedEvent) {
+    if (event && event.parentId === this.documentList.currentFolderId) {
+      this.documentList.reload();
+    }
+  }
+
+  onCreateFolder($event: Event) {
+    const dialogRef = this.dialog.open(CreateFolderDialogComponent);
+    dialogRef.afterClosed().subscribe(folderName => {
+      if (folderName) {
+        this.contentService.createFolder('', folderName, this.documentList.currentFolderId).subscribe(
+          node => console.log(node),
+          err => console.log(err)
+        );
+      }
+    });
   }
 }
