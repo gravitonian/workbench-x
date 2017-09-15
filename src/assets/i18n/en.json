@@ -11,13 +11,15 @@
       "FOLDER": {
         "COPY": "Copy",
         "MOVE": "Move",
-        "DELETE": "Delete"
+        "DELETE": "Delete",
+        "DETAILS": "Details"
       },
       "DOCUMENT": {
         "DOWNLOAD": "Download",
         "COPY": "Copy",
         "MOVE": "Move",
-        "DELETE": "Delete"
+        "DELETE": "Delete",
+        "DETAILS": "Details"
       }
     }
   }

@@ -7,6 +7,11 @@ import { RepositoryPageComponent } from './repository-page/repository-page.compo
 import { AppCommonModule } from '../app-common/app-common.module';
 import { DocumentListModule } from 'ng2-alfresco-documentlist';
 import { UploadModule } from 'ng2-alfresco-upload';
+import { CardViewUpdateService } from 'ng2-alfresco-core';
+import { ViewerModule } from 'ng2-alfresco-viewer';
+
+import { RepositoryDetailsPageComponent } from './repository-details-page/repository-details-page.component';
+import { RepositoryListPageComponent } from './repository-list-page/repository-list-page.component';
 
 
 @NgModule({
@@ -19,8 +24,10 @@ import { UploadModule } from 'ng2-alfresco-upload';
 
     /* ADF libs specific to this module */
     DocumentListModule,
-    UploadModule
+    UploadModule,
+    ViewerModule
   ],
-  declarations: [RepositoryPageComponent]
+  declarations: [RepositoryPageComponent, RepositoryDetailsPageComponent, RepositoryListPageComponent],
+  providers: [CardViewUpdateService] /* Need to set it up as a provider here as there is a bug in CoreModule, it does not import... */
 })
 export class RepositoryModule { }

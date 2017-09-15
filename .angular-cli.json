@@ -14,7 +14,9 @@
         { "glob": "**/*", "input": "../node_modules/ng2-alfresco-login/bundles/assets", "output": "./assets/" },
         { "glob": "**/*", "input": "../node_modules/ng2-alfresco-datatable/bundles/assets", "output": "./assets/" },
         { "glob": "**/*", "input": "../node_modules/ng2-alfresco-documentlist/bundles/assets", "output": "./assets/" },
-        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-upload/bundles/assets", "output": "./assets/" }
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-upload/bundles/assets", "output": "./assets/" },
+        { "glob": "**/*", "input": "../node_modules/ng2-alfresco-viewer/bundles/assets", "output": "./assets/" },
+        { "glob": "pdf.worker.js", "input": "../node_modules/pdfjs-dist/build", "output": "./" }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -30,7 +32,10 @@
         "../node_modules/ng2-alfresco-core/prebuilt-themes/adf-blue-orange.css"
       ],
       "scripts": [
-        "../node_modules/material-design-lite/material.min.js"
+        "../node_modules/material-design-lite/material.min.js",
+        "../node_modules/pdfjs-dist/build/pdf.js",
+        "../node_modules/pdfjs-dist/web/compatibility.js",
+        "../node_modules/pdfjs-dist/web/pdf_viewer.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
