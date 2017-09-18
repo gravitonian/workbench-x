@@ -36,15 +36,15 @@
     </md-card>
   </md-tab>
   <md-tab label="Preview" *ngIf="isFile">
-    <adf-viewer
-      [overlayMode]="false"
-      [showViewer]="true"
-      [fileNodeId]="nodeId">
-    </adf-viewer>
+    <div class="adf-not-overlay-viewer">
+      <adf-viewer
+        [showViewer]="true"
+        [overlayMode]="false"
+        [fileNodeId]="nodeId">
+      </adf-viewer>
+    </div>
   </md-tab>
 </md-tab-group>
-
-
 
 
 

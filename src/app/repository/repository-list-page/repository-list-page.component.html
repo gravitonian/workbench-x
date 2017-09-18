@@ -21,7 +21,7 @@
   <adf-document-list
     #documentList
     [navigationMode]="'click'"
-    [currentFolderId]="'-root-'"
+    [currentFolderId]="currentFolderId"
     [contextMenuActions]="true"
     [contentActions]="true">
     <content-actions>
@@ -40,7 +40,7 @@
         icon="folder"
         target="folder"
         title="{{'DOCUMENT_LIST.ACTIONS.FOLDER.DETAILS' | translate}}"
-        handler="folder-details">
+        (execute)="onFolderDetails($event)">
       </content-action>
       <!-- File actions -->
       <content-action
@@ -57,7 +57,7 @@
         icon="insert_drive_file"
         target="document"
         title="{{'DOCUMENT_LIST.ACTIONS.DOCUMENT.DETAILS' | translate}}"
-        handler="document-details">
+        (execute)="onDocumentDetails($event)">
       </content-action>
     </content-actions>
   </adf-document-list>

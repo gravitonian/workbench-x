@@ -2,11 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { NotificationService, AlfrescoContentService,
   FolderCreatedEvent, CreateFolderDialogComponent } from 'ng2-alfresco-core';
-import { DocumentListComponent, DocumentActionsService } from 'ng2-alfresco-documentlist';
-import { MinimalNodeEntity } from 'alfresco-js-api';
+import { DocumentListComponent } from 'ng2-alfresco-documentlist';
+import {MinimalNodeEntity, MinimalNodeEntryEntity} from 'alfresco-js-api';
 import { MdDialog } from '@angular/material';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-repository-list-page',
@@ -14,19 +13,32 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./repository-list-page.component.css']
 })
 export class RepositoryListPageComponent implements OnInit {
+  currentFolderId = '-root-'; // By default display /Company Home
 
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
 
   constructor(private notificationService: NotificationService,
               private contentService: AlfrescoContentService,
-              private documentActions: DocumentActionsService,
               private dialog: MdDialog,
+              private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.setupActionHandlers();
-  }
+   }
 
   ngOnInit() {
+    console.log('currentFolderId: ', this.currentFolderId);
+
+    // Check if we should display some other folder than root
+    const currentFolderIdObservable = this.activatedRoute
+       .queryParamMap
+       .map(params => params.get('current_folder_id'));
+    currentFolderIdObservable.subscribe((id: string) => {
+       if (id) {
+         this.currentFolderId = id;
+         this.documentList.loadFolderByNodeId(this.currentFolderId);
+       }
+     });
+
     this.contentService.folderCreated.subscribe(value => this.onFolderCreated(value));
   }
 
@@ -82,18 +94,15 @@ export class RepositoryListPageComponent implements OnInit {
     });
   }
 
-  private setupActionHandlers() {
-    this.documentActions.setHandler('folder-details', this.onFolderDetails.bind(this));
-    this.documentActions.setHandler('document-details', this.onDocumentDetails.bind(this));
+  private onFolderDetails(event: any) {
+    const entry: MinimalNodeEntryEntity = event.value.entry;
+    console.log('Navigating to details page for folder: ' + entry.name);
+    this.router.navigate(['/repository/details', entry.id]);
   }
 
-  private onFolderDetails(event: any): Observable<boolean> {
-    const entry = event.entry;
-    return Observable.fromPromise(this.router.navigate(['/repository/details', entry.id]));
-  }
-
-  private onDocumentDetails(event: any): Observable<boolean> {
-    const entry = event.entry;
-    return Observable.fromPromise(this.router.navigate(['/repository/details', entry.id]));
+  private onDocumentDetails(event: any) {
+    const entry: MinimalNodeEntryEntity = event.value.entry;
+    console.log('Navigating to details page for document: ' + entry.name);
+    this.router.navigate(['/repository/details', entry.id]);
   }
 }
