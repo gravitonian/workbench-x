@@ -5,8 +5,9 @@
     </adf-breadcrumb>
     <span *ngIf="nodeName">{{ nodeName }}</span>
   </adf-toolbar-title>
-  <button md-icon-button
-          mdTooltip="Download this content item"
+  <button *ngIf="isFile"
+          md-icon-button
+          mdTooltip="Download this file"
           (click)="onDownload($event)">
     <md-icon>file_download</md-icon>
   </button>
