@@ -26,6 +26,16 @@
   </button>
 </adf-toolbar>
 <md-tab-group>
+  <!-- Currently the Preview has to be the first tab -->
+  <md-tab label="Preview" *ngIf="isFile">
+    <div class="adf-not-overlay-viewer">
+      <adf-viewer
+        [showViewer]="true"
+        [overlayMode]="false"
+        [fileNodeId]="nodeId">
+      </adf-viewer>
+    </div>
+  </md-tab>
   <md-tab label="Properties (metadata)">
     <md-card class="adf-card-container">
       <md-card-content>
@@ -35,15 +45,6 @@
         </adf-card-view>
       </md-card-content>
     </md-card>
-  </md-tab>
-  <md-tab label="Preview" *ngIf="isFile">
-    <div class="adf-not-overlay-viewer">
-      <adf-viewer
-        [showViewer]="true"
-        [overlayMode]="false"
-        [fileNodeId]="nodeId">
-      </adf-viewer>
-    </div>
   </md-tab>
 </md-tab-group>
 

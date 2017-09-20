@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CardViewDateItemModel, CardViewItem, CardViewTextItemModel, AlfrescoApiService } from 'ng2-alfresco-core';
-import {MinimalNodeEntity, MinimalNodeEntryEntity} from 'alfresco-js-api';
+import { CardViewDateItemModel, CardViewItem, CardViewTextItemModel, NodesApiService, AlfrescoContentService } from 'ng2-alfresco-core';
+import { MinimalNodeEntryEntity } from 'alfresco-js-api';
 
 @Component({
   selector: 'app-repository-details-page',
@@ -12,30 +12,34 @@ import {MinimalNodeEntity, MinimalNodeEntryEntity} from 'alfresco-js-api';
 export class RepositoryDetailsPageComponent implements OnInit {
   nodeId: string;
   nodeName: string;
-  parentFolder: MinimalNodeEntity;
+  parentFolder: MinimalNodeEntryEntity;
   isFile: boolean;
   properties: Array<CardViewItem>;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
-              private apiService: AlfrescoApiService) {
+              private nodeService: NodesApiService,
+              private contentService: AlfrescoContentService) {
     this.properties = new Array<CardViewItem>();
   }
 
   ngOnInit() {
     this.nodeId = this.activatedRoute.snapshot.params['node-id'];
-    this.apiService.getInstance().nodes.getNode(this.nodeId).then((node: MinimalNodeEntity) => {
-      return this.setupProps(node);
+    this.nodeService.getNode(this.nodeId).subscribe((entry: MinimalNodeEntryEntity) => {
+      const node: MinimalNodeEntryEntity = entry;
+      this.nodeName = node.name;
+      this.isFile = node.isFile;
+
+      this.nodeService.getNode(node.parentId).subscribe((parentNode: MinimalNodeEntryEntity) => {
+        this.parentFolder = parentNode;
+      });
+
+      this.setupProps(node);
     });
   }
 
-  private setupProps(entity: MinimalNodeEntity) {
-    const node: MinimalNodeEntryEntity = entity.entry;
-    this.nodeName = node.name;
-    this.isFile = node.isFile;
-    this.apiService.getInstance().nodes.getNode(node.parentId).then((parentNode: MinimalNodeEntity) => {
-      this.parentFolder = parentNode;
-    });
+  private setupProps(node: MinimalNodeEntryEntity) {
+    console.log('setupProps: ', node.id);
 
     // Properties that are always available
     const idProp = new CardViewTextItemModel({label: 'Id:', value: node.id, key: 'nodeId'});
@@ -86,20 +90,21 @@ export class RepositoryDetailsPageComponent implements OnInit {
   }
 
   onDownload($event: Event) {
-    const url = this.apiService.getInstance().content.getContentUrl(this.nodeId, true);
+    const url = this.contentService.getContentUrl(this.nodeId, true);
     const fileName = this.nodeName;
     this.download(url, fileName);
   }
 
   onDelete($event: Event) {
-    this.apiService.getInstance().nodes.deleteNode(this.nodeId);
-    this.navigateBack2DocList();
+    this.nodeService.deleteNode(this.nodeId).subscribe(() => {
+      this.navigateBack2DocList();
+    });
   }
 
   private navigateBack2DocList() {
     this.router.navigate(
       ['/repository'],
-      { queryParams: { current_folder_id: this.parentFolder.entry.id } });
+      { queryParams: { current_folder_id: this.parentFolder.id } });
   }
 
   private download(url: string, fileName: string) {
