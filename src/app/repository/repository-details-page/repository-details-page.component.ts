@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CardViewDateItemModel, CardViewItem, CardViewTextItemModel, NodesApiService, AlfrescoContentService } from 'ng2-alfresco-core';

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationService, AlfrescoContentService,
   FolderCreatedEvent, CreateFolderDialogComponent } from 'ng2-alfresco-core';
 import { DocumentListComponent } from 'ng2-alfresco-documentlist';
-import {MinimalNodeEntity, MinimalNodeEntryEntity} from 'alfresco-js-api';
+import { MinimalNodeEntity, MinimalNodeEntryEntity } from 'alfresco-js-api';
 import { MdDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -94,13 +94,13 @@ export class RepositoryListPageComponent implements OnInit {
     });
   }
 
-  private onFolderDetails(event: any) {
+  onFolderDetails(event: any) {
     const entry: MinimalNodeEntryEntity = event.value.entry;
     console.log('Navigating to details page for folder: ' + entry.name);
     this.router.navigate(['/repository/details', entry.id]);
   }
 
-  private onDocumentDetails(event: any) {
+  onDocumentDetails(event: any) {
     const entry: MinimalNodeEntryEntity = event.value.entry;
     console.log('Navigating to details page for document: ' + entry.name);
     this.router.navigate(['/repository/details', entry.id]);
