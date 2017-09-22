@@ -11,6 +11,16 @@
         [folderNode]="documentList.folderNode">
       </adf-breadcrumb>
     </adf-toolbar-title>
+    <adf-upload-button
+      [rootFolderId]="documentList.currentFolderId"
+      [uploadFolders]="false"
+      [multipleFiles]="true"
+      [acceptedFilesType]="'*'"
+      [versioning]="false"
+      [adf-node-permission]="'create'"
+      [adf-nodes]="getNodesForPermissionCheck()"
+      (onSuccess)="onButtonUploadSuccess($event)">
+    </adf-upload-button>
     <adf-toolbar-divider></adf-toolbar-divider>
     <button md-icon-button
             (click)="onCreateFolder($event)">

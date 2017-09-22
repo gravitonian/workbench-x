@@ -105,4 +105,10 @@ export class RepositoryListPageComponent implements OnInit {
     console.log('Navigating to details page for document: ' + entry.name);
     this.router.navigate(['/repository/details', entry.id]);
   }
+
+  onButtonUploadSuccess($event: Event) {
+    console.log('Button upload successful!');
+
+    this.documentList.reload();
+  }
 }
