@@ -33,7 +33,7 @@ export class AppMenuService {
    */
   getMenuItems(): MenuItem[] {
     return this.router.config
-      .filter(route => route.data && route.data.title)
+      .filter(route => route.data && route.data.title && !route.data.hidden)
       .map(route => {
         if (!route.data.title) {
           throw new Error('Missing title for toolbar menu route ' + route.path);

@@ -9,6 +9,7 @@ const routes: Routes = [
     path: 'repository',
     component: RepositoryPageComponent,
     data: {
+      hidden: false,
       title: 'Repository'
     },
     children: [

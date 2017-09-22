@@ -33,6 +33,7 @@
     "ng2-alfresco-core": "1.8.0",
     "ng2-alfresco-documentlist": "1.8.0",
     "ng2-alfresco-login": "1.8.0",
+    "ng2-alfresco-search": "1.8.0",
     "ng2-alfresco-upload": "1.8.0",
     "ng2-alfresco-viewer": "1.8.0",
     "pdfjs-dist": "1.9.514",

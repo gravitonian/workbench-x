@@ -6,6 +6,7 @@ const routes: Routes = [{
   path: 'login',
   component: AppLoginPageComponent,
   data: {
+    hidden: false,
     title: 'Login'
   }
 }];

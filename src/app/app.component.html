@@ -24,9 +24,8 @@
     </button>
     {{(activeMenuItem$ | async)?.title}}
     <span fxFlex></span>
-    <span class="done">
-      <button><md-icon>search</md-icon></button>
-    </span>
+    <app-search-bar></app-search-bar>
+    <span fxFlex></span>
     <button md-icon-button [mdMenuTriggerFor]="dropdownMenu">
       <md-icon>more_vert</md-icon>
     </button>
