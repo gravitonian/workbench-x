@@ -1,11 +1,12 @@
 {
   "DOCUMENT_LIST": {
     "COLUMNS": {
-      "DISPLAY_NAME": "Display name",
-      "TAG": "Tag",
-      "CREATED_BY": "Created by",
-      "CREATED_ON": "Created on",
-      "CREATED": "Created"
+      "NAME": "Name",
+      "TITLE": "Title",
+      "DESCRIPTION": "Description",
+      "LAST_UPDATED": "Last Updated",
+      "SIZE": "Size",
+      "VERSION": "Version"
     },
     "ACTIONS": {
       "FOLDER": {
