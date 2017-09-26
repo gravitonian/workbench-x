@@ -4,6 +4,11 @@
   [adf-nodes]="getNodesForPermissionCheck()"
   (onSuccess)="onDragAndDropUploadSuccess($event)">
   <adf-toolbar [color]="'accent'">
+    <div class="app-site-container-style">
+      <adf-sites-dropdown
+        (change)="getSiteContent($event)">
+      </adf-sites-dropdown>
+    </div>
     <adf-toolbar-title>
       <adf-breadcrumb
         [target]="documentList"
@@ -26,25 +31,13 @@
       <md-icon>create_new_folder</md-icon>
     </button>
   </adf-toolbar>
+
   <adf-document-list
     #documentList
     [navigationMode]="'click'"
     [currentFolderId]="currentFolderId"
     [contextMenuActions]="true"
     [contentActions]="true">
-    <data-columns>
-      <data-column key="$thumbnail" type="image"></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.NAME' | translate}}" key="name" class="full-width ellipsis-cell"></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.TITLE' | translate}}" key="properties.cm:title" type="text"></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.DESCRIPTION' | translate}}" key="properties.cm:description" type="text"></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.LAST_UPDATED' | translate}}" key="modifiedAt" type="date" format="shortDate" ></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.SIZE' | translate}}" key="content.sizeInBytes" type="fileSize"></data-column>
-      <data-column title="{{'DOCUMENT_LIST.COLUMNS.VERSION' | translate}}" key="properties.cm:versionLabel">
-          <ng-template let-value="value">
-            <span *ngIf="value">V. {{value}}</span>
-          </ng-template>
-      </data-column>
-    </data-columns>
     <content-actions>
       <!-- Folder actions -->
       <content-action
@@ -82,4 +75,5 @@
       </content-action>
     </content-actions>
   </adf-document-list>
+
 </adf-upload-drag-area>

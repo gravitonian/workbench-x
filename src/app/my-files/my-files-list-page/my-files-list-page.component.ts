@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RepositoryListPageComponent } from '../../repository/repository-list-page/repository-list-page.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 
 import { NotificationService, AlfrescoContentService } from 'ng2-alfresco-core';
+import { MinimalNodeEntryEntity } from 'alfresco-js-api';
 
 @Component({
   selector: 'app-my-files-list-page',
@@ -17,12 +18,26 @@ export class MyFilesListPageComponent extends RepositoryListPageComponent implem
               contentService: AlfrescoContentService,
               dialog: MdDialog,
               activatedRoute: ActivatedRoute,
-              router: Router) {
-    super(notificationService, contentService, dialog , activatedRoute, router);
+              router: Router,
+              cdRef: ChangeDetectorRef) {
+    super(notificationService, contentService, dialog , activatedRoute, router, cdRef);
   }
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.cdRef.detectChanges(); // Workaround for ExpressionChangedAfterItHasBeenCheckedError
   }
 
+  onFolderDetails(event: any) {
+    const entry: MinimalNodeEntryEntity = event.value.entry;
+    console.log('MyFilesListPageComponent: Navigating to details page for folder: ' + entry.name);
+    this.router.navigate(['/my-files', entry.id]);
+  }
+
+  onDocumentDetails(event: any) {
+    const entry: MinimalNodeEntryEntity = event.value.entry;
+    console.log('MyFilesListPageComponent: Navigating to details page for document: ' + entry.name);
+    this.router.navigate(['/my-files', entry.id]);
+  }
 }

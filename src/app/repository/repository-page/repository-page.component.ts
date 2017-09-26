@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-repository-page',
@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RepositoryPageComponent implements OnInit {
 
+  constructor(private cdRef: ChangeDetectorRef) {}
+
   ngOnInit() {
+    this.cdRef.detectChanges(); // Workaround for ExpressionChangedAfterItHasBeenCheckedError
   }
 }

@@ -14,6 +14,8 @@ import { SearchModule } from './search/search.module';
 import { SearchRoutingModule } from './search/search-routing.module';
 import { MyFilesModule } from './my-files/my-files.module';
 import { MyFilesRoutingModule } from './my-files/my-files-routing.module';
+import { SitesRoutingModule } from './sites/sites-routing.module';
+import { SitesModule } from './sites/sites.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { MyFilesRoutingModule } from './my-files/my-files-routing.module';
     SearchModule,
     SearchRoutingModule,
     MyFilesModule,
-    MyFilesRoutingModule
+    MyFilesRoutingModule,
+    SitesModule,
+    SitesRoutingModule
   ],
   providers: [AppMenuService],
   bootstrap: [AppComponent]

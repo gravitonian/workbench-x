@@ -14,7 +14,7 @@ const routes: Routes = [
     },
     children: [
       { path: '', component: RepositoryListPageComponent },
-      { path: 'details/:node-id', component: RepositoryDetailsPageComponent }
+      { path: ':node-id', component: RepositoryDetailsPageComponent }
     ]
   }
   ];

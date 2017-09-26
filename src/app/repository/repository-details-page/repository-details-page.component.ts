@@ -102,9 +102,11 @@ export class RepositoryDetailsPageComponent implements OnInit {
   }
 
   private navigateBack2DocList() {
-    this.router.navigate(
-      ['/repository'],
-      { queryParams: { current_folder_id: this.parentFolder.id } });
+    this.router.navigate(['../'],
+      {
+        queryParams: { current_folder_id: this.parentFolder.id },
+        relativeTo: this.activatedRoute
+      });
   }
 
   private download(url: string, fileName: string) {

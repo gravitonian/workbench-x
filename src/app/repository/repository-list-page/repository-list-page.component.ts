@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 
 import { NotificationService, AlfrescoContentService,
   FolderCreatedEvent, CreateFolderDialogComponent } from 'ng2-alfresco-core';
@@ -18,11 +18,12 @@ export class RepositoryListPageComponent implements OnInit {
   @ViewChild(DocumentListComponent)
   documentList: DocumentListComponent;
 
-  constructor(private notificationService: NotificationService,
-              private contentService: AlfrescoContentService,
-              private dialog: MdDialog,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {
+  constructor(protected notificationService: NotificationService,
+              protected contentService: AlfrescoContentService,
+              protected dialog: MdDialog,
+              protected activatedRoute: ActivatedRoute,
+              protected router: Router,
+              protected cdRef: ChangeDetectorRef) {
    }
 
   ngOnInit() {
@@ -40,6 +41,8 @@ export class RepositoryListPageComponent implements OnInit {
      });
 
     this.contentService.folderCreated.subscribe(value => this.onFolderCreated(value));
+
+    this.cdRef.detectChanges(); // Workaround for ExpressionChangedAfterItHasBeenCheckedError
   }
 
   onDragAndDropUploadSuccess($event: Event) {
@@ -96,14 +99,14 @@ export class RepositoryListPageComponent implements OnInit {
 
   onFolderDetails(event: any) {
     const entry: MinimalNodeEntryEntity = event.value.entry;
-    console.log('Navigating to details page for folder: ' + entry.name);
-    this.router.navigate(['/repository/details', entry.id]);
+    console.log('RepositoryListPageComponent: Navigating to details page for folder: ' + entry.name);
+    this.router.navigate(['/repository', entry.id]);
   }
 
   onDocumentDetails(event: any) {
     const entry: MinimalNodeEntryEntity = event.value.entry;
-    console.log('Navigating to details page for document: ' + entry.name);
-    this.router.navigate(['/repository/details', entry.id]);
+    console.log('RepositoryListPageComponent: Navigating to details page for document: ' + entry.name);
+    this.router.navigate(['/repository', entry.id]);
   }
 
   onButtonUploadSuccess($event: Event) {

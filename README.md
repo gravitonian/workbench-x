@@ -1,10 +1,15 @@
-# WorkbenchX
+# Workbench-X
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.2.
 
+## Prerequisites
+
+Alfresco Content Services (ACS) need to be running on port 8080 locally.
+(Optionally) Alfresco Process Services (APS) running on port 9080 locally.
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
