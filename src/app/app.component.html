@@ -33,7 +33,7 @@
   <router-outlet></router-outlet>
 </md-sidenav-container>
 <md-menu #dropdownMenu x-position="before">
-  <a md-menu-item href="" routerLink="/logout">
+  <a md-menu-item href="" (click)="onLogout($event)">
     <md-icon>exit_to_app</md-icon>
     <span>Logout</span>
   </a>

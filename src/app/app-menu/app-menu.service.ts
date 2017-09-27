@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import { AuthenticationService } from 'ng2-alfresco-core';
 
 /* Data for a menu item */
 export class MenuItem {
@@ -12,11 +15,15 @@ export class MenuItem {
 
 @Injectable()
 export class AppMenuService {
+  // Make it possible to send an event about menu changed, so we can talk between components
+  menuChanged = new Subject<any>();
 
   /* Keep track of which menu item is currently being active/selected */
   activeMenuItem$: Observable<MenuItem>;
 
-  constructor(private router: Router, private titleService: Title) {
+  constructor(private router: Router,
+              private titleService: Title,
+              private authService: AuthenticationService) {
     this.activeMenuItem$ = this.router.events
       .filter(e => e instanceof NavigationEnd)
       .map(_ => this.router.routerState.root)
@@ -33,7 +40,10 @@ export class AppMenuService {
    */
   getMenuItems(): MenuItem[] {
     return this.router.config
-      .filter(route => route.data && route.data.title && !route.data.hidden)
+      .filter(route => route.data && route.data.title &&
+        !route.data.hidden &&
+        ((route.data.isLogin && !this.authService.isEcmLoggedIn()) || !route.data.isLogin) &&
+        ((route.data.needEcmAuth && this.authService.isEcmLoggedIn()) || !route.data.needEcmAuth))
       .map(route => {
         if (!route.data.title) {
           throw new Error('Missing title for toolbar menu route ' + route.path);
@@ -44,6 +54,10 @@ export class AppMenuService {
           icon: route.data.icon
         };
       });
+  }
+
+  fireMenuChanged() {
+    this.menuChanged.next(null);
   }
 
   private lastRouteWithMenuItem(route: ActivatedRoute): MenuItem {
@@ -60,4 +74,5 @@ export class AppMenuService {
     return cfg && cfg.data && cfg.data.title
       ? {path: cfg.path, title: cfg.data.title, icon: cfg.data.icon}
       : undefined;
-  }}
+  }
+}

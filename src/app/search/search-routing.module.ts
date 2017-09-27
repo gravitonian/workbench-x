@@ -3,12 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { SearchResultPageComponent } from './search-result-page/search-result-page.component';
 
+import { AuthGuardEcm } from 'ng2-alfresco-core';
+
 const routes: Routes = [
   { path: 'search',
     component: SearchResultPageComponent,
+    canActivate: [AuthGuardEcm],
     data: {
       hidden: true,
-      title: 'Search'
+      title: 'Search',
+      needEcmAuth: true,
+      isLogin: false
     }
   }
 ];
