@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CardViewDateItemModel, CardViewItem, CardViewTextItemModel, NodesApiService, AlfrescoContentService } from 'ng2-alfresco-core';
-import { MinimalNodeEntryEntity } from 'alfresco-js-api';
+import { CardViewUpdateService, UpdateNotification, CardViewDateItemModel, CardViewItem, CardViewTextItemModel,
+         NodesApiService, AlfrescoContentService, NotificationService } from 'ng2-alfresco-core';
+import { MinimalNodeEntryEntity, NodeBody } from 'alfresco-js-api';
 
 @Component({
   selector: 'app-repository-details-page',
@@ -15,11 +16,16 @@ export class RepositoryDetailsPageComponent implements OnInit {
   parentFolder: MinimalNodeEntryEntity;
   isFile: boolean;
   properties: Array<CardViewItem>;
+  propertiesChanged = false;
+  titleProp: CardViewTextItemModel;
+  descProp: CardViewTextItemModel;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private nodeService: NodesApiService,
-              private contentService: AlfrescoContentService) {
+              private contentService: AlfrescoContentService,
+              private cardViewUpdateService: CardViewUpdateService,
+              protected notificationService: NotificationService) {
     this.properties = new Array<CardViewItem>();
   }
 
@@ -36,6 +42,8 @@ export class RepositoryDetailsPageComponent implements OnInit {
 
       this.setupProps(node);
     });
+
+    this.cardViewUpdateService.itemUpdated$.subscribe(this.updateNodeDetails.bind(this));
   }
 
   private setupProps(node: MinimalNodeEntryEntity) {
@@ -65,11 +73,11 @@ export class RepositoryDetailsPageComponent implements OnInit {
     // Aspect properties
     const titledAspect = 'cm:titled';
     if (node.aspectNames.indexOf(titledAspect) > -1) {
-      const titleProp = new CardViewTextItemModel({label: 'Title:', value: node.properties['cm:title'], key: 'title', default: ''});
-      const descProp = new CardViewTextItemModel({label: 'Description:', value: node.properties['cm:description'],
-                                                  key: 'description', default: '', multiline: true});
-      this.properties.push(titleProp);
-      this.properties.push(descProp);
+      this.titleProp = new CardViewTextItemModel({label: 'Title:', value: node.properties['cm:title'], key: 'title', editable: true, default: ''});
+      this.descProp = new CardViewTextItemModel({label: 'Description:', value: node.properties['cm:description'],
+                                                  key: 'description', editable: true, default: '', multiline: true});
+      this.properties.push(this.titleProp);
+      this.properties.push(this.descProp);
     }
 
     // Author can be available if extracted during ingestion of content
@@ -122,4 +130,65 @@ export class RepositoryDetailsPageComponent implements OnInit {
       document.body.removeChild(link);
     }
   }
- }
+
+  private updateNodeDetails(updateNotification: UpdateNotification) {
+    const currentValue = updateNotification.target.value;
+    const newValue = updateNotification.changed[updateNotification.target.key];
+    if (currentValue !== newValue) {
+      console.log(updateNotification.target, ' = ', updateNotification.changed);
+      if (updateNotification.target.key === this.titleProp.key) {
+        this.titleProp.value = updateNotification.changed[this.titleProp.key];
+      }
+      if (updateNotification.target.key === this.descProp.key) {
+        this.descProp.value = updateNotification.changed[this.descProp.key];
+      }
+      this.propertiesChanged = true;
+    }
+  }
+
+  /**
+   * Updates the node with identifier 'nodeId'.
+   * For example, you can rename a file or folder:
+   * {
+   *  "name": "My new name"
+   * }
+   *
+   * You can also set or update one or more properties:
+   * {
+   *  "properties":
+   *     {
+   *      "cm:title": "Folder title"
+   *     }
+   * }
+   *
+   * If you want to add or remove aspects, then you must use **GET /nodes/{nodeId}** first to get the complete
+   * set of *aspectNames*.
+   * Currently there is no optimistic locking for updates, so they are applied in "last one wins" order.
+   */
+  onSave($event: Event) {
+    console.log('this.titleProp.value = ', this.titleProp.value);
+    console.log('this.descProp.value = ', this.descProp.value);
+
+    const nodeBody = <NodeBody> {
+      'properties':
+        {
+          'cm:title': this.titleProp.value,
+          'cm:description': this.descProp.value
+        }
+    };
+
+    this.nodeService.updateNode(this.nodeId, nodeBody).subscribe(
+        () => {
+          this.notificationService.openSnackMessage(
+            `Properties for '${this.nodeName}' was saved successfully`,
+            4000);
+        }
+      );
+
+    this.propertiesChanged = false;
+  }
+
+  isSaveDisabled() {
+    return !this.propertiesChanged;
+  }
+}
